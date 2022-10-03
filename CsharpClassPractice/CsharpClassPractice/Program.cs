@@ -12,49 +12,95 @@ namespace CsharpClassPractice
 {
     internal class Program
     {
+
+        static Dog dog = new Dog();
+        static Random rnd = new Random();
         static System.Timers.Timer timer = new System.Timers.Timer();
-        Dog dog = new Dog(1);
-        Random rnd = new Random();
-
-        static void Main(string[] args, Dog dog)
+        static DateTime dt;
+        static void Main(string[] args)
         {
-
-            timer.Interval = 3000;
-            dog.Calm();
-            dog.Sad();
-            dog.WannaEat();
+            timer.Elapsed += Timer_Elapsed;
+            timer.Enabled = true;
+            dt = DateTime.Now;
+            dt = dt.AddMinutes(3);
+            timer.Start();
+            Console.ReadLine();
+            //Dog dog1 = new Dog(3);
+            //string wish = "еды!гав";
+            //dog.Wanna(wish);
+            //MessageBox.Show("");
         }
-        private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        static private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            timer.Interval = rnd.Next(1000, 3000);
+            if (!dog.LivesDog() && DateTime.Now < dt)
+            {
+                if(DateTime.Now > dt)
+                {
+                    timer.Stop();
+                    Console.WriteLine("Вы справились!");
+                }
+                Console.WriteLine(e.SignalTime.ToString());
+                timer.Interval = rnd.Next(1000, 10000);
+                int action = rnd.Next(1, 6);
+                switch (action)
+                {
+                    case 1: dog.Wanna("Хочу Играть!!!гАААв"); break;
+                    case 2: dog.Wanna("Хочу есть!!!ГАв"); break;
+                    case 3: dog.Wanna("ГавГавГав Хочу спать!"); break;
+                    case 4: dog.Wanna("Гав гав гав Хочу Гулять!!"); break;
+                    case 5: dog.Wanna("Гав Хочу в туалет!!!"); break;
+                    case 6: dog.Wanna("Гав гав гав гав чужой!!!"); break;
+                    default: MessageBox.Show("Пес похищен!"); break;
+                }
+            }
+            else
+            {
+                timer.Stop();
+            }
         }
 
     }
     class Dog
     {
-        int _state = 0;
-        int _life = 3;
+        int _live = 3;
         bool _death = false;
-        public Dog(int state)
+        public Dog()
         {
-            _state = state;
-        }
-        public void WannaEat(string wish)
-        {
-            DialogResult dr = new DialogResult();
-            dr = MessageBox.Show("Гав!" + wish, wish, (MessageBoxButtons)MessageBoxButton.OKCancel);
-            if (DialogResult.OK == dr)
-            {
-                if (_life < 3)
-                {
-                    _life++;
-                }
-            }
 
         }
-        public void Sad()
+        public bool LivesDog()
         {
-            string saddog = @"
+            return _death;
+        }
+        public void Wanna(string wish)
+        {
+            DialogResult dr = new DialogResult();
+            dr = MessageBox.Show("ГАВ! " + wish, wish, MessageBoxButtons.OKCancel);
+            if (DialogResult.OK == dr)
+            {
+                if (_live < 3)
+                {
+                    _live++;
+                }
+                Console.Clear();
+                Calm();
+                Console.WriteLine($"Песик имеет {_live} жизней");
+            }
+            if (DialogResult.Cancel == dr)
+            {
+                Console.Clear();
+                Sad();
+                _live--;
+                Console.WriteLine($"Песик имеет {_live} жизней");
+            }
+            if (_live == 0)
+            {
+                Console.WriteLine("Песик умер");
+            }
+        }
+        public void Calm()
+        {
+            string calmdog = @"
 ░░░░██░░░░░░░░░██░░░░░░░░
 ░░░█░░█░░░░░░░█░░█░░░░░░░
 ░░█░██░█░░░░░█░██░█░░░░░░
@@ -66,11 +112,12 @@ namespace CsharpClassPractice
 ░░█░░░░█████░░░░░░█░░░░░░
 ";
             //Console.WriteLine(saddog);
-            MessageBox.Show(saddog, "Я грустный", (MessageBoxButtons)MessageBoxButton.YesNoCancel);
+            Console.WriteLine(calmdog);
+            MessageBox.Show(calmdog, "Я живой,здоровый пес!", (MessageBoxButtons)MessageBoxButton.OK);
         }
-        public void Calm()
+        public void Sad()
         {
-            string dogcalm = @"
+            string saddog = @"
 ░░░░░░░░░▄░░░░░░░░░░░░░░▄░░░░
 ░░░░░░░░▌▒█░░░░░░░░░░░▄▀▒▌░░░
 ░░░░░░░░▌▒▒█░░░░░░░░▄▀▒▒▒▐░░░
@@ -90,8 +137,8 @@ namespace CsharpClassPractice
 ░░░░▀▄▒▒▒▒▒▒▒▒▒▒▄▄▄▀▒▒▒▒▄▀░░░
 ░░░░░░▀▄▄▄▄▄▄▀▀▀▒▒▒▒▒▄▄▀░░░░░
 ░░░░░░░░░▒▒▒▒▒▒▒▒▒▒▀▀░░░░░░░░";
-            Console.WriteLine(dogcalm);
-            MessageBox.Show(dogcalm, "Я здесь Кожаный Мешок!!!!", (MessageBoxButtons)MessageBoxButton.YesNoCancel);
+            Console.WriteLine(saddog);
+            MessageBox.Show(saddog, "Я грустный корми меня!!!!", (MessageBoxButtons)MessageBoxButton.OK);
         }
     }
 
