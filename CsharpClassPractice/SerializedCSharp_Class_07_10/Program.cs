@@ -67,19 +67,21 @@ namespace SerializedCSharp_Class_07_10
             }
             using (FileStream fs = new FileStream("allbill.xml", FileMode.Open))
             {
-            XmlSerializer xseria = new XmlSerializer(typeof(AllBills));
-                    xseria.Serialize(fs, ab);
-                    partBill.Display();
+                XmlSerializer xseria = new XmlSerializer(typeof(AllBills));
+                AllBills result = xseria.Deserialize(fs) as AllBills;
+                for (int i = 0; i < result.bills.Count; i++)
+                {
+                    Bill b = result.bills[i];
+                    b.Display();
+                }
+
             }
-
-
-
         }
     }
   
     public class AllBills
     {
-        static public List<Bill> bills = new List<Bill>();
+       public static List<Bill> bills = new List<Bill>();
         public void Add(Bill obj)
         {
             bills.Add(obj);
