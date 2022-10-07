@@ -15,8 +15,15 @@ namespace SerializedCSharp_Class_07_10
             Bill bill = new Bill(1000,1,0);
             //PartBill partBill = (PartBill)Bill(1000,1,1,0);
             PartBill partBill = new PartBill(bill._billOnDay, bill._dayCount, bill._penalty, bill._dayPenaltyCount);
+            AllBills ab = new AllBills();
+            Bill bill2 = new Bill(2000,5,4);
+            ab.Add(bill2);
+            ab.Add(bill2);
+            ab.Add(bill2);
+            ab.Add(bill2);
             Bill.FullPayment = true;
             using (FileStream fs = new FileStream("bill.xml", FileMode.Create)) { } 
+            using (FileStream fs = new FileStream("allbill.xml", FileMode.Create)) { } 
             using (FileStream fs = new FileStream("bill.xml", FileMode.Truncate)) 
             {
                 if (Bill.FullPayment)
@@ -53,9 +60,32 @@ namespace SerializedCSharp_Class_07_10
 
                 }
             }
-          
+            using (FileStream fs = new FileStream("allbill.xml", FileMode.Truncate))
+            {
+                XmlSerializer xseria = new XmlSerializer(typeof(AllBills));
+                xseria.Serialize(fs, ab);
+            }
+            using (FileStream fs = new FileStream("allbill.xml", FileMode.Open))
+            {
+            XmlSerializer xseria = new XmlSerializer(typeof(AllBills));
+                    xseria.Serialize(fs, ab);
+                    partBill.Display();
+            }
+
+
+
         }
     }
+  
+    public class AllBills
+    {
+        static public List<Bill> bills = new List<Bill>();
+        public void Add(Bill obj)
+        {
+            bills.Add(obj);
+        }
+    }
+
     public class PartBill
     {
         public decimal _billOnDay;
