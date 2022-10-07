@@ -60,22 +60,22 @@ namespace SerializedCSharp_Class_07_10
 
                 }
             }
-            using (FileStream fs = new FileStream("allbill.xml", FileMode.Truncate))
-            {
-                XmlSerializer xseria = new XmlSerializer(typeof(AllBills));
-                xseria.Serialize(fs, ab);
-            }
-            using (FileStream fs = new FileStream("allbill.xml", FileMode.Open))
-            {
-                XmlSerializer xseria = new XmlSerializer(typeof(AllBills));
-                AllBills result = xseria.Deserialize(fs) as AllBills;
-                for (int i = 0; i < result.bills.Count; i++)
-                {
-                    Bill b = result.bills[i];
-                    b.Display();
-                }
+            //using (FileStream fs = new FileStream("allbill.xml", FileMode.Truncate))
+            //{
+            //    XmlSerializer xseria = new XmlSerializer(typeof(AllBills));
+            //    xseria.Serialize(fs, ab);
+            //}
+            //using (FileStream fs = new FileStream("allbill.xml", FileMode.Open))
+            //{
+            //    XmlSerializer xseria = new XmlSerializer(typeof(AllBills));
+            //    AllBills result = xseria.Deserialize(fs) as AllBills;
+            //    for (int i = 0; i < result.bills.Count; i++)
+            //    {
+            //        Bill b = result.bills[i];
+            //        b.Display();
+            //    }
 
-            }
+            //}
         }
     }
   
