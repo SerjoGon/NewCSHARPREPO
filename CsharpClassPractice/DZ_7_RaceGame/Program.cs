@@ -1,75 +1,187 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DZ_7_RaceGame
 {
+    public delegate void CarFinishEvent();
     internal class Program
     {
         static void Main(string[] args)
         {
-            List<RaceCar> raceCars = new List<RaceCar>() { 
-                new RaceCar(0,160,20,true),
-                new RaceCar(0,300,5,true),
-                new RaceCar(0,200,15,true),
-                new RaceCar(0,220,10,true)
-            };
+           RaceCar Beha = new RaceCar("BMW",180);
+           JustCar Taz= new JustCar("СемЁрка",130);
+           SportCar Lamba = new SportCar("Lamborghini", 220);
+            Race race = new Race(Beha,Taz,Lamba,1000);
+            race.RaceGame();
         }
     }
-    abstract class Vehicle
+    public abstract class Vehicle
     {
-        public abstract UInt32 Speed { get; set; }
-        public abstract UInt32 MaxSpeed { get; set; }
-        public abstract UInt32 Boost{ get; set; }
-        public abstract bool Start { get; set; }
-        public abstract void Movement();
+        public event CarFinishEvent CarFinish;
+        public  string Name { get; set; }
+        public  int MaxSpeed { get; set; }
+        public int TraveledDistance{ get; set; }
+        public abstract void Drive();
     }
     class RaceCar:Vehicle
     {
-        public override UInt32 Speed { get; set; }
-        public override UInt32 MaxSpeed { get; set; }
-        public override UInt32 Boost { get; set; }
-        public override bool Start { get; set; }
-
-        public RaceCar(uint speed, uint maxSpeed, uint boost, bool start)
+        public event CarFinishEvent CarFinish;
+        public string Name { get; set; }
+        public int MaxSpeed { get; set; }
+        public int TraveledDistance { get; set; }
+        private Random rand;
+        public RaceCar(string name,int maxspeed)
         {
-            Speed = speed;
-            MaxSpeed = maxSpeed;
-            Boost = boost;
-            Start = start;
+            Name = Name;
+            MaxSpeed = maxspeed;
+            TraveledDistance = 0;
+            rand = new Random();
         }
         public RaceCar()
         {
-            Speed = 0;
+            Name = "AnyCar";
             MaxSpeed = 150;
-            Boost = 5;
-            Start = true;
+            TraveledDistance = 0;
+            rand = new Random();
         }
-
-        public override void Movement()
+        public override void Drive()
         {
-            if(Start == true)
+            int Move = rand.Next(1, MaxSpeed);
+            TraveledDistance += Move;
+            if(TraveledDistance >= Race._racedistance)
             {
-                for (Speed = 0; Speed <= MaxSpeed; Speed+=Boost) ;
+                CarFinish();
             }
         }
-
+        public override string ToString()
+        {
+            return Name.ToString();
+        }
     }
+   
+    class JustCar:Vehicle
+    {
+        public event CarFinishEvent CarFinish;
+        public string Name { get; set; }
+        public int MaxSpeed { get; set; }
+        public int TraveledDistance { get; set; }
+        private Random rand;
+        public JustCar(string name, int maxspeed)
+        {
+            Name = Name;
+            MaxSpeed = maxspeed;
+            TraveledDistance = 0;
+            rand = new Random();
+        }
+        public JustCar()
+        {
+            Name = "AnyCar";
+            MaxSpeed = 150;
+            TraveledDistance = 0;
+            rand = new Random();
+        }
+        public override void Drive()
+        {
+            int Move = rand.Next(1, MaxSpeed);
+            TraveledDistance += Move;
+            if (TraveledDistance >= Race._racedistance)
+            {
+                CarFinish();
+            }
+        }
+        public override string ToString()
+        {
+            return Name.ToString();
+        }
+    }
+    class SportCar:Vehicle
+    {
+        public event CarFinishEvent CarFinish;
+        public string Name { get; set; }
+        public int MaxSpeed { get; set; }
+        public int TraveledDistance { get; set; }
+        private Random rand;
+        public SportCar(string name, int maxspeed)
+        {
+            Name = Name;
+            MaxSpeed = maxspeed;
+            TraveledDistance = 0;
+            rand = new Random();
+        }
+        public SportCar()
+        {
+            Name = "AnyCar";
+            MaxSpeed = 150;
+            TraveledDistance = 0;
+            rand = new Random();
+        }
+        public override void Drive()
+        {
+            int Move = rand.Next(1, MaxSpeed);
+            TraveledDistance += Move;
+            if (TraveledDistance >= Race._racedistance)
+            {
+                CarFinish();
+            }
+        }
+        public override string ToString()
+        {
+            return Name.ToString();
+        }
+    }
+
     class Race
     {
-        public List<RaceCar> _cars { get; set; }
-        public uint _track { get; set; }
-
-        public Race(List<RaceCar> cars, uint track)
+        RaceCar _racecar;
+        JustCar _justcar;
+        SportCar _sportcar;
+        public static int _racedistance { get; set; }
+        public Race()
         {
-            _cars = cars;
-            _track = track;
+            _racecar = new RaceCar() {Name = "AnyCar",MaxSpeed = 6 };
+            _justcar = new JustCar() {Name = "AnyCar",MaxSpeed = 4 };
+            _sportcar = new SportCar() {Name = "AnyCar",MaxSpeed = 8 };
+            _racedistance = 100;
         }
-        public void racing_race()
+        public Race(RaceCar racecar, JustCar justcar, SportCar sportcar,int racedistance)
         {
-            for(int i = 0;)
+            _racecar = racecar;
+            _justcar = justcar;
+            _sportcar = sportcar;
+            _racedistance = racedistance;
+        }
+        public void RaceGame()
+        {
+            _racecar.CarFinish += () =>
+            {
+                Console.WriteLine($"Гоночное авто {_racecar.Name} доехал до финиша!");
+            };
+            _justcar.CarFinish += () =>
+            {
+                Console.WriteLine($"Автомобиль {_justcar.Name} доехал до финиша!");
+            };
+            _sportcar.CarFinish += () =>
+            {
+                Console.WriteLine($"Спорткар {_sportcar.Name} доехал до финиша!");
+            };
+            int timecount = 1;
+            Console.WriteLine("Time:\t\tГоночное авто{0}\t\tАвтомобиль{1}\t\tСпорткар{2}", _racecar.Name,_justcar.Name,_sportcar.Name);
+            Console.WriteLine("===================================================================");
+            while(true)
+            {
+                _racecar.Drive();
+                _justcar.Drive();
+                _sportcar.Drive();
+                Console.WriteLine("{0}\t\t{1}км\t\t\t{2}км\t\t\t{3}км",timecount++,_racecar.TraveledDistance, _justcar.TraveledDistance, _sportcar.TraveledDistance);
+                if (_racecar.TraveledDistance >= _racedistance || _justcar.TraveledDistance >= _racedistance || _sportcar.TraveledDistance >= _racedistance)
+                {
+                    break;
+                }
+            }
         }
     }
 }
