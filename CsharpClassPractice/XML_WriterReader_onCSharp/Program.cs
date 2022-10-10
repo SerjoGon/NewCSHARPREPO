@@ -19,9 +19,16 @@ namespace XML_WriterReader_onCSharp
                  new Product("Asus", "OficePC", 130000),
                   new Product("Apple", "luxury", 2230000)
             };
+            List<Product> listProduct2 = new List<Product>();
             Order ord = new Order(listProduct);
+            Order ord2 = new Order(listProduct2);
             MyXml.SaveXML("1test.xml", ord);
             MyXml.XMLLoad("1test.xml");
+            ord2 = MyXml.XMLLoad("1test.xml", ord2);
+            foreach(Product product in ord2._products)
+            {
+                Console.WriteLine(product.ToString());
+            }
         }
     }
     class Order
@@ -100,8 +107,6 @@ namespace XML_WriterReader_onCSharp
                 xmltr.ReadStartElement("Orders");
                 string name = ""; string description = "";
                 int price = 0;
-                //bool productExist = false;
-
                 while (xmltr.Read())
                 {
                     if (xmltr.NodeType == XmlNodeType.Element && xmltr.Name == "product")
@@ -135,10 +140,6 @@ namespace XML_WriterReader_onCSharp
                             Console.WriteLine(prod.ToString());
                         }
                     }
-
-                    //xmltr.MoveToAttribute("name");
-                    //xmltr.MoveToContent();
-                    //Console.WriteLine(xmltr.ReadString());
                 }
                 foreach (var product in products)
                 {
@@ -160,6 +161,15 @@ namespace XML_WriterReader_onCSharp
         }
         public static Order XMLLoad(string path, Order ord)
         {
+            XmlDocument xdoc = new XmlDocument();
+            if (path != null) xdoc.Load(path);
+            foreach (XmlElement xel in xdoc.GetElementsByTagName("product"))
+            {
+                ord._products.Add(new Product(
+                    xel.GetAttribute("name"),
+                    xel.GetElementsByTagName("Description")[0].InnerText,
+                    Int32.Parse(xel.GetElementsByTagName("Price")[0].InnerText)));
+            }
             return ord;
         }
     }
