@@ -9,7 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerializedCSharp_Class_07_1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DZ_7_RaceGame", "DZ_7_RaceGame\DZ_7_RaceGame.csproj", "{86A33496-2210-4438-8F1A-AA9AA981754F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XML_WriterReader_onCSharp", "XML_WriterReader_onCSharp\XML_WriterReader_onCSharp.csproj", "{395A20F7-0C99-4891-96FB-B599BB0FF5A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XML_WriterReader_onCSharp", "XML_WriterReader_onCSharp\XML_WriterReader_onCSharp.csproj", "{395A20F7-0C99-4891-96FB-B599BB0FF5A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutorizationXML", "AutorizationXML\AutorizationXML.csproj", "{5839C6A1-9775-4382-9038-177F4B3E9E91}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{395A20F7-0C99-4891-96FB-B599BB0FF5A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{395A20F7-0C99-4891-96FB-B599BB0FF5A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{395A20F7-0C99-4891-96FB-B599BB0FF5A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5839C6A1-9775-4382-9038-177F4B3E9E91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5839C6A1-9775-4382-9038-177F4B3E9E91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5839C6A1-9775-4382-9038-177F4B3E9E91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5839C6A1-9775-4382-9038-177F4B3E9E91}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
