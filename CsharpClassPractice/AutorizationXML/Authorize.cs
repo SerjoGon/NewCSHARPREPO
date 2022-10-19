@@ -1,13 +1,16 @@
-﻿using AuthoriseXML;
-using System.Xml;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Xml;
 
-
-namespace AutorizationXML
+namespace AuthoriseXML
 {
     internal class Authorize
     {
-        public static bool UserInSystem;
+        public static bool UserInSystem = false;
         public static bool GetUserAuthorize(User user)
         {
             bool tmp = true;
@@ -21,18 +24,21 @@ namespace AutorizationXML
                     if (element.GetElementsByTagName("login")[0].InnerText == user.Login &&
                         element.GetElementsByTagName("password")[0].InnerText == user.Password)
                         tmp = false;
+
                 }
-                if (ConsoleCommand.AuthCount == 3)
+                if (ConsoleCommand.AuthTryCount == 3)
                 {
                     tmp = false;
-                    ConsoleCommand.AuthCount = 0;
+                    ConsoleCommand.AuthTryCount = 0;
                     ConsoleCommand.UserStart();
                 }
                 return tmp;
+
             }
             else
             {
-                Console.WriteLine("Eror! В системе нет такого пользователя");
+                Console.WriteLine("В системе нет пользователей");
+                tmp = false;
                 return tmp;
             }
 
@@ -94,10 +100,7 @@ namespace AutorizationXML
                     new XElement("dateofbirth", user.DateOfBirth));
                 root.Add(element);
             }
-
             root.Save("users.xml");
-
         }
-
     }
 }

@@ -1,14 +1,14 @@
-﻿using AuthoriseXML;
-using System.Xml;
-using System.Xml.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-
-namespace AutorizationXML
+namespace AuthoriseXML
 {
     internal class ConsoleCommand
     {
-
-        public static int AuthCount = 0;
+        public static int AuthTryCount = 0;
         public static void MustAuth()
         {
             Console.WriteLine("Авторизуйтесь! Заполните поля логина и пароля.");
@@ -19,16 +19,18 @@ namespace AutorizationXML
             string login = Console.ReadLine();
             Console.WriteLine("Введите пароль:");
             string password = Console.ReadLine();
-            User user = new User(login, password);
+            User user = new User(login, password, DateTime.Now);
             return user;
         }
         public static void SucessAuth()
         {
             Console.WriteLine("Вы успешно авторизовались.");
+            Authorize.UserInSystem = true;
         }
         public static void FailedAuth()
         {
             Console.WriteLine("Вы не смогли авторизоваться.");
+            AuthTryCount++;
         }
         public static string UserStart()
         {
@@ -42,9 +44,11 @@ namespace AutorizationXML
             }
             return answer;
         }
+
         public static void InformationAfterAuth()
         {
-            Console.WriteLine("Возможные команды: \n quizlist");
+            Console.WriteLine("Возможные команды: \n quizlist \n startquiz {quiz name} \n quizresults \n " +
+                "topquiz {quiz name} \n changesettings \n exit ");
         }
     }
 }
