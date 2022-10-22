@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Text;
@@ -7,9 +8,14 @@ using System.Threading.Tasks;
 
 namespace DZ_7_RaceGame
 {
+   
     public delegate void CarFinishEvent();
     internal class Program
     {
+       public static void Log(string message)
+    {
+        File.AppendAllText("log.txt", message);
+    } 
         static void Main(string[] args)
         {
            RaceCar Beha = new RaceCar("BMW",180);
@@ -17,6 +23,7 @@ namespace DZ_7_RaceGame
            SportCar Lamba = new SportCar("Lamborghini", 220);
             Race race = new Race(Beha,Taz,Lamba,1000);
             race.RaceGame();
+            Log(Beha.Name);
         }
     }
     public abstract class Vehicle
