@@ -180,6 +180,7 @@ namespace DZ_7_RaceGame
             Console.WriteLine("===================================================================");
             while(true)
             {
+                Logger.WriteLog("Цикл заезда!");
                 _racecar.Drive();
                 _justcar.Drive();
                 _sportcar.Drive();
