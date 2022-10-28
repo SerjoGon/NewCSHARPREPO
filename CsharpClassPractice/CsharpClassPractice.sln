@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutorizationXML", "Autoriza
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopModule5", "ShopModule5\ShopModule5.csproj", "{EDC152AC-CA6C-4A68-A77D-7AF187D08D36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JustCod", "JustCod\JustCod.csproj", "{E876F866-2408-4BAB-B03A-8B2B2059D829}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JustCod", "JustCod\JustCod.csproj", "{E876F866-2408-4BAB-B03A-8B2B2059D829}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizExam", "QuizExam\QuizExam.csproj", "{0F7028D9-5E71-4E25-A455-0C3BC8FB536B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{E876F866-2408-4BAB-B03A-8B2B2059D829}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E876F866-2408-4BAB-B03A-8B2B2059D829}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E876F866-2408-4BAB-B03A-8B2B2059D829}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F7028D9-5E71-4E25-A455-0C3BC8FB536B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F7028D9-5E71-4E25-A455-0C3BC8FB536B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F7028D9-5E71-4E25-A455-0C3BC8FB536B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F7028D9-5E71-4E25-A455-0C3BC8FB536B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
