@@ -20,14 +20,11 @@ namespace QuizExam
 
     public interface IVictorina
     {
-        IMyXmlFile XmlFile { get; set; }
+        public IMyXmlFile XmlFile { get; set; }
         public string Name { get; set; }
         public string Path { get; set; }
         List<IQuestion> questions { get; set; }
-        public void Start();
-        public void Save();
-        public void Load();
-
+       
     }
 
     public interface IQuestion
@@ -137,7 +134,7 @@ namespace QuizExam
             {
                 xmltr = new XmlTextReader(path);
                 xmltr.ReadStartElement("Victorina");
-                string quest = "";
+                string quest = "", quizname = "";
                 List<string> variants = new List<string>();
                 List<int> answers = new List<int>();
                 while (xmltr.Read())
@@ -147,7 +144,7 @@ namespace QuizExam
                         if (xmltr.NodeType == XmlNodeType.Element && xmltr.Name == "Quest")
                         {
                             xmltr.MoveToAttribute(0);
-                            quiz.questions  = xmltr.Value;
+                            quizname  = xmltr.Value;
                         }
                         for (int j = 0; i < 4; i++)
                         {
@@ -169,6 +166,8 @@ namespace QuizExam
 
                 }
             }
+            catch (Exception ex) { }
+        return quiz;
         }
         public void SaveVictorina(string path, Victorina victorina)
         {
@@ -228,14 +227,6 @@ namespace QuizExam
         }
         public string Path { get; set; }
         public List<Question> questions { get => questions; set { this.questions = value; } }
-
-        public void Start()
-        { }
-        public void Save()
-        {
-
-        }
-        public void Load() { }
     }
     class MassiveVictorins : IMassiveVictorins
     {
@@ -253,7 +244,7 @@ namespace QuizExam
             _variants = variants;
             _answers = answers;
         }
-        public string ToString()
+        public override string ToString()
         {
             return Name;
         }
