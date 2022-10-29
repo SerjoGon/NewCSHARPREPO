@@ -1,6 +1,9 @@
-﻿using System.Security.Cryptography;
+﻿using System.Runtime.Serialization;
+using System.Security.Cryptography;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace QuizExam
 {
@@ -9,6 +12,26 @@ namespace QuizExam
         static void Main(string[] args)
         {
             Console.WriteLine("Hello, World!");
+            List<string> variant = new List<string>() {"var1", "var2", "var3","var4" };
+            List<int> answer = new List<int>() {1,0,0,0 };
+            Question q1 = new Question("testquestion1", variant, answer);
+            Question q2 = new Question("testquestion2", variant, answer);
+            Question q3 = new Question("testquestion3", variant, answer);
+            Question q4 = new Question("testquestion4", variant, answer);
+            Question q5 = new Question("testquestion5", variant, answer);
+            Question q6 = new Question("testquestion6", variant, answer);
+            Question q7 = new Question("testquestion7", variant, answer);
+            Question q8 = new Question("testquestion8", variant, answer);
+            Question q9 = new Question("testquestion9", variant, answer);
+            Question q10 = new Question("testquestion10", variant, answer);
+            List<Question> questions = new List<Question>() { q1,q2,q3,q4,q5,q6,q7,q8,q9,q10};
+            Victorina victorina = new Victorina("TestVictorina","TestXmlv1.xml",questions);
+            MyXmlFile myXmlFile = new MyXmlFile();
+            //myXmlFile.SaveVictorina("test.xml",victorina);
+            XDocument xdoc = new XDocument();
+            XElement victorinatest = new XElement(victorina.Name);
+
+            
         }
     }
 
@@ -23,8 +46,8 @@ namespace QuizExam
         public IMyXmlFile XmlFile { get; set; }
         public string Name { get; set; }
         public string Path { get; set; }
-        List<IQuestion> questions { get; set; }
-       
+        List<IQuestion> Questions { get; set; }
+
     }
 
     public interface IQuestion
@@ -32,7 +55,6 @@ namespace QuizExam
         public string Name { set; get; }
         List<string> variants { get; set; }
         List<int> answers { get; set; }
-        public string ToString();
     }
 
     public interface IUser
@@ -41,65 +63,32 @@ namespace QuizExam
         public string Login { get; set; }
         public string Password { get; set; }
         public DateTime BirthDay { get; set; }
-        public string ToString();
     }
-
-    interface IAuth
-    {
-        IMyXmlFile XmlFile { get; set; }
-        public bool GetAuth(IUser user);
-        public string GetUserName(IUser user);
-
-
-    }
-
-    interface IRegister
-    {
-        IMyXmlFile XmlFile { get; set; }
-        public bool SaveNewUser(IUser user);
-        public bool ExistUser(IUser user);
-
-    }
-    interface Settings
-    {
-        IMyXmlFile XmlFile { get; set; }
-        public bool ChangeUserSettingsPassword(IUser user, string password);
-        public bool ChangeUserSettingsBirthDate(IUser user, DateTime date);
-        public bool ChangeUserSettingsAll(IUser user, string password, DateTime date);
-    }
-
     public interface IMyXmlFile
     {
-        public bool ExistFile(string path);
-        public IVictorina GetVictorina(string path);
-        public void SaveVictorina(string path, IVictorina victorina);
-        public IUser GetUser(string path);
-        public void SaveUser(string path, IUser user, bool rewrite = false);
-        public ResultTable GetResultTable(string path);
-        public void SaveResultTable(string path, ResultTable rt);
-        public IMassiveVictorins GetAllVictorins();
+        bool ExistFile(string path);
+        IVictorina GetVictorina(string path);
+        void SaveVictorina(string path, IVictorina victorina);
+        IUser GetUser(string path);
+        bool SaveUser(string path, IUser user, bool rewrite = false);
+      
 
     }
 
-    interface ResultTable
+    interface IResultTable
     {
         public string Name { get; set; }
-        IMyXmlFile XmlFile { get; set; }
-        List<TableItem> TableItems { get; set; }
+        public IMyXmlFile XmlFile { get; set; }
+        public List<TableItem> TableItems { get; set; }
         public string Path { get; set; }
-        public void SaveResultTable();
-        public string Top20(string name);
-        public string AllResults(string name);
-
 
     }
 
-    interface TableItem
+    interface ITableItem
     {
         public string Score { get; set; }
         public string NameUser { get; set; }
         public string NameVictorina { get; set; }
-        public string ToString();
 
     }
 
@@ -107,19 +96,15 @@ namespace QuizExam
     {
         IMyXmlFile XmlFile { get; set; }
         IVictorina Victorina { get; set; }
-        public void NewVictorina();
 
-        public void SaveVictorina();
-
-        public void EditVictorina();
     }
+    [Serializable]
     class MyXmlFile : IMyXmlFile
     {
         public bool ExistFile(string path)
         {
             if (path == null)
             {
-
                 return false;
             }
             else
@@ -127,51 +112,24 @@ namespace QuizExam
                 return true;
             }
         }
-        public Victorina GetVictorina(string path, Victorina quiz)
+        public Victorina GetVictorina( Victorina? quiz)
         {
-            XmlTextReader? xmltr = null;
+            quiz = new Victorina();
+                XmlSerializer xmlFormat = new XmlSerializer(typeof(Victorina));
             try
             {
-                xmltr = new XmlTextReader(path);
-                xmltr.ReadStartElement("Victorina");
-                string quest = "", quizname = "";
-                List<string> variants = new List<string>();
-                List<int> answers = new List<int>();
-                while (xmltr.Read())
+                using (Stream fStream = File.OpenRead(quiz.Path))
                 {
-                    for (int i = 0; i < 20; i++)
-                    {
-                        if (xmltr.NodeType == XmlNodeType.Element && xmltr.Name == "Quest")
-                        {
-                            xmltr.MoveToAttribute(0);
-                            quizname  = xmltr.Value;
-                        }
-                        for (int j = 0; i < 4; i++)
-                        {
-                            if (xmltr.NodeType == XmlNodeType.Element && xmltr.Name == "Variants")
-                            {
-                                xmltr.MoveToContent();
-                                variants[j] = xmltr.Value;
-                            }
-                        }
-                        for (int j = 0; i < 4; i++)
-                        {
-                            if (xmltr.NodeType == XmlNodeType.Element && xmltr.Name == "Answers")
-                            {
-                                xmltr.MoveToContent();
-                                answers[j] = Int32.Parse(xmltr.Value);
-                            }
-                        }
-                    }
-
+                    quiz = xmlFormat.Deserialize(fStream) as Victorina;
                 }
             }
             catch (Exception ex) { }
-        return quiz;
+            return quiz;
         }
         public void SaveVictorina(string path, Victorina victorina)
         {
-            XmlTextWriter? xmltw = null;
+            #region TextWritertry
+            /*XmlTextWriter? xmltw = null;
             try
             {
                 xmltw = new XmlTextWriter(path, Encoding.Unicode);
@@ -204,49 +162,175 @@ namespace QuizExam
             finally
             {
                 if (xmltw != null) xmltw.Close();
+            }*/
+            #endregion
+            XmlSerializer xmlFormat = new XmlSerializer(typeof(Victorina));
+            try 
+            {
+                using (Stream fStream = File.Create(victorina.Path))
+                {
+                    xmlFormat.Serialize(fStream, victorina);
+                }
+                Console.WriteLine("Serialize Done!");
             }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
+        public IUser GetUser(string path, User? user)
+        {
+            XmlSerializer xmlFormat = new XmlSerializer(typeof(User));
+            try
+            {
+                using (Stream fStream = File.OpenRead(path))
+                {
+                    user = xmlFormat.Deserialize(fStream) as User;
+                }
+            }
+            catch (Exception ex) { }
+            return user;
 
         }
-        public IUser GetUser(string path) { }
-        public void SaveUser(string path, IUser user, bool rewrite = false) { }
-        public ResultTable GetResultTable(string path) { }
+        public bool SaveUser(string path, IUser user, bool rewrite = false)
+        {
+            List<User> users = new List<User>();
+            XElement root;
+            XmlDocument xdoc;
+            FileInfo file = new FileInfo(path);
+            if (!file.Exists)
+            {
+                FileStream fs = file.Create();
+                fs.Close();
+                users.Add(new User(user.Name,user.Login,user.Password,user.BirthDay));
+            }
+            else
+            {
+                xdoc = new XmlDocument();
+                xdoc.Load(path);
+                foreach (XmlElement element in xdoc.GetElementsByTagName("user"))
+                {
+                    users.Add(new User(
+                        element.GetElementsByTagName("Name")[0].InnerText,
+                        element.GetElementsByTagName("Login")[0].InnerText,
+                        element.GetElementsByTagName("Password")[0].InnerText,
+                        Convert.ToDateTime(element.GetElementsByTagName("Dateofbirth")[0].InnerText)));
+                    users.Add(new User(user.Name, user.Login, user.Password, user.BirthDay));
+                }
+                xdoc.RemoveAll();
+            }
+            root = new XElement("users");
+            foreach (User us in users)
+            {
+                XElement element = new XElement("user");
+                element.Add(
+                    new XElement("Name",us.Name),
+                    new XElement("Login", us.Login),
+                    new XElement("Password", us.Password),
+                    new XElement("Dateofbirth", us.BirthDay));
+                root.Add(element);
+            }
+            root.Save(path);
+            return ExistFile(path);
+            
+        }
+        public ResultTable GetResultTable(string path) { return null; }
         public void SaveResultTable(string path, ResultTable rt) { }
-        public IMassiveVictorins GetAllVictorins() { }
+        public IMassiveVictorins GetAllVictorins() { return null; }
 
+        public IVictorina GetVictorina(string path)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveVictorina(string path, IVictorina victorina)
+        {
+            throw new NotImplementedException();
+        }
+
+        IUser IMyXmlFile.GetUser(string path)
+        {
+            throw new NotImplementedException();
+        }
     }
+    [Serializable]
     class Victorina : IVictorina
     {
         public MyXmlFile XmlFile { get; set; }
-        public string Name
-        {
-            get => Name;
-            set
-            {
-                this.Name = value;
-            }
-        }
+        public string Name { get; set; }
         public string Path { get; set; }
-        public List<Question> questions { get => questions; set { this.questions = value; } }
+        public List<Question> Questions { get; set; }
+
+        IMyXmlFile IVictorina.XmlFile { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        List<IQuestion> IVictorina.Questions { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Victorina(string name, string path, List<Question> questions)
+        {
+            Name = name;
+            Path = path;
+            Questions = questions;
+        }
+        public Victorina() { }
+
     }
+    [Serializable]
     class MassiveVictorins : IMassiveVictorins
     {
         public MyXmlFile XmlFile { get; set; }
         public List<Victorina> VictorinaList { get; set; }
+        IMyXmlFile IMassiveVictorins.XmlFile { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        List<IVictorina> IMassiveVictorins.VictorinaList { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
+    [Serializable]
     class Question : IQuestion
     {
         public string Name { set; get; }
-        public List<string> _variants { get; set; }
-        public List<int> _answers { get; set; }
-        public Question(string name, List<string> variants, List<int> answers)
+        public List<string> variants { get; set; }
+        public List<int> answers { get; set; }
+       
+        public Question(string name, List<string> variant, List<int> answer)
         {
             Name = name;
-            _variants = variants;
-            _answers = answers;
+            variants = variant;
+            answers = answer;
         }
-        public override string ToString()
+    }
+    [Serializable]
+    class ResultTable : IResultTable
+    {
+        public string Name { get; set; }
+        public IMyXmlFile XmlFile { get; set; }
+        public List<TableItem>? TableItems { get; set; }
+        public string Path { get; set; }
+        public ResultTable(string name, IMyXmlFile xmlfile, List<TableItem> tableitm, string path)
         {
-            return Name;
+            Name = name;
+            XmlFile = xmlfile;
+            TableItems = tableitm;
+            Path = path;
+        }
+
+    }
+    [Serializable]
+    class TableItem : ITableItem
+    {
+        public string Score { get; set; }
+        public string NameUser { get; set; }
+        public string NameVictorina { get; set; }
+
+    }
+    [Serializable]
+    public class User:IUser
+    {
+        public string Name { get; set; }
+        public string Login { get; set; }
+        public string Password { get; set; }
+        public DateTime BirthDay { get; set; }
+        public User(string name, string login, string password, DateTime birthDay)
+        {
+            Name = name;
+            Login = login;
+            Password = password;
+            BirthDay = birthDay;
         }
     }
 }
