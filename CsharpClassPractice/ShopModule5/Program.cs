@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+﻿using System.Composition;
 
 namespace ShopModule5
 {
@@ -22,12 +15,16 @@ namespace ShopModule5
             store.GetShopInfo();
             Console.WriteLine(store == store2);
             Shop shop3 = new Shop("МармеладкиБоба ", " Непессимистов 50 ", " Кондитерский универсам ", " 8(928)199-99-22 ", " bobs_candy_store@mail.ru", 55);
-            shop3.AddShop();
+            //shop3 = shop3.AddShop();
             shop3.GetShopInfo();
+            Shop shopnew = new Shop();
+            shopnew.GetShopInfo();
         }
     }
+    
     class Shop
     {
+        [Import("property.ini")]
         public string _nameShop { get; set; }
         public string _addressShop { get; set; }
         public string _profShop { get; set; }
