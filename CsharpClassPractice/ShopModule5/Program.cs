@@ -21,10 +21,20 @@ namespace ShopModule5
             shopnew.GetShopInfo();
         }
     }
-    
+    [AttributeUsage(AttributeTargets.Property)]
+    public class PropertyAttribute :Attribute
+    {
+        public string _path { get; set; }
+        public string _info { get; set; }
+        public PropertyAttribute(string path)
+        {
+            _path = path;
+            
+        }
+    }
     class Shop
     {
-        [Import("property.ini")]
+        [PropertyAttribute("property1.ini")]
         public string _nameShop { get; set; }
         public string _addressShop { get; set; }
         public string _profShop { get; set; }
@@ -46,7 +56,7 @@ namespace ShopModule5
 
         public Shop()
         {
-            
+           
         }
 
         public static int operator +(Shop shoparea, int addshoparea)
