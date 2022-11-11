@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JustCod", "JustCod\JustCod.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuizExam", "QuizExam\QuizExam.csproj", "{0F7028D9-5E71-4E25-A455-0C3BC8FB536B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttributePropertyDZ12", "AttributePropertyDZ12\AttributePropertyDZ12.csproj", "{614C49F3-1B2C-4B01-AC84-EFD5A4B3CDCE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AttributePropertyDZ12", "AttributePropertyDZ12\AttributePropertyDZ12.csproj", "{614C49F3-1B2C-4B01-AC84-EFD5A4B3CDCE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exam", "Exam\Exam.csproj", "{B18E9305-6EFC-41CF-A737-3E0CB3A35187}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{614C49F3-1B2C-4B01-AC84-EFD5A4B3CDCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{614C49F3-1B2C-4B01-AC84-EFD5A4B3CDCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{614C49F3-1B2C-4B01-AC84-EFD5A4B3CDCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B18E9305-6EFC-41CF-A737-3E0CB3A35187}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B18E9305-6EFC-41CF-A737-3E0CB3A35187}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B18E9305-6EFC-41CF-A737-3E0CB3A35187}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B18E9305-6EFC-41CF-A737-3E0CB3A35187}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
