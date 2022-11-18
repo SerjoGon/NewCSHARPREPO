@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuizExam", "QuizExam\QuizEx
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AttributePropertyDZ12", "AttributePropertyDZ12\AttributePropertyDZ12.csproj", "{614C49F3-1B2C-4B01-AC84-EFD5A4B3CDCE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exam", "Exam\Exam.csproj", "{B18E9305-6EFC-41CF-A737-3E0CB3A35187}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exam", "Exam\Exam.csproj", "{B18E9305-6EFC-41CF-A737-3E0CB3A35187}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
